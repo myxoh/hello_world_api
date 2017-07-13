@@ -49,7 +49,7 @@ test:
 #
 production:
   <<: *default
-  host: http://mysqlht3-mikelanctest.int.paas.gto.uk.intranet.db.com
+  host:  <%= ENV['DATABASE_HOST'] %>
   database: hackteam3
   username: hackteam3
   password: hackteam3
