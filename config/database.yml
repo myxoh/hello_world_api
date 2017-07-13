@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
-  database: HelloWorld_production
-  username: HelloWorld
-  password: <%= ENV['HELLOWORLD_DATABASE_PASSWORD'] %>
+  host: http://mysqlht3-mikelanctest.int.paas.gto.uk.intranet.db.com
+  database: hackteam3
+  username: hackteam3
+  password: hackteam3
