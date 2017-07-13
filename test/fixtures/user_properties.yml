@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  property: one
+  value: MyText
+  hidden: false
+
+two:
+  user: two
+  property: two
+  value: MyText
+  hidden: false
