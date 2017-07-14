@@ -19,12 +19,17 @@ class InterestsController < ApplicationController
 
   # POST /interests
   def create
-    @interest = Interest.new(interest_params)
+    if @user then
+      create_multiple_interests_for_user
+      redirect_to user_interests_path
+    else 
+      @interest = Interest.new(interest_params)
 
-    if @interest.save
-      render json: @interest, status: :created, location: @interest
-    else
-      render json: @interest.errors, status: :unprocessable_entity
+      if @interest.save
+        render json: @interest, status: :created, location: @interest
+      else
+        render json: @interest.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -43,6 +48,14 @@ class InterestsController < ApplicationController
   end
 
   private
+    def create_multiple_interests_for_user
+      interests = params[:tags].map do |tag|
+        Interest.find_by_name(tag)
+      end
+      interests.each do |interest|
+        @user.interests.push(interest)
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_interest
       @interest = Interest.find(params[:id])

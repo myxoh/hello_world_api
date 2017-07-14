@@ -18,12 +18,16 @@ class SkillsController < ApplicationController
 
   # POST /skills
   def create
-    @skill = Skill.new(skill_params)
-
-    if @skill.save
-      render json: @skill, status: :created, location: @skill
-    else
-      render json: @skill.errors, status: :unprocessable_entity
+    if @user then
+      create_multiple_skills_for_user
+      redirect_to user_skills_path
+    else 
+      @skill = Skill.new(skill_params)
+      if @skill.save
+        render json: @skill, status: :created, location: @skill
+      else
+        render json: @skill.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -50,6 +54,16 @@ class SkillsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def skill_params
       params.require(:skill).permit(:name)
+    end
+
+
+    def create_multiple_skills_for_user
+      skills = params[:tags].map do |tag|
+        Skill.find_by_name(tag)
+      end
+      skills.each do |skill|
+        @user.skills.push(skill)
+      end
     end
 
     def set_user
