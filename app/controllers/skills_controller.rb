@@ -2,6 +2,13 @@ class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :update, :destroy]
   before_action :set_user
   # GET /skills
+
+  def search_users
+    @mentors = User.distinct.joins(:skills).where(skills:{name: params[:tags] }).order("RAND()").includes(:skills).limit(5)
+    render json: @mentors.to_json(include: :skills)
+  end
+
+
   def index
     @skills = Skill.all
     if(@user) then

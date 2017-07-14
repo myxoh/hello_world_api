@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :connect_with, :mentors, :mentees]
 
   # GET /users
   def index
@@ -7,6 +7,20 @@ class UsersController < ApplicationController
 
     render json: @users
   end
+
+  def connect_with
+    UserMentor.create(mentee:@user, mentor: User.find(params[:mentor_id]))
+    render json: @user.mentors
+  end
+
+  def mentors
+    render json: @user.mentors
+  end
+
+  def mentees
+    render json: @user.mentees
+  end
+
 
   # GET /users/1
   def show

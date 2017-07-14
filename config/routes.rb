@@ -1,13 +1,21 @@
 Rails.application.routes.draw do
   resources :properties
 
-  resources :skills do |skill|
+  resources :skills do
+    collection do 
+      get 'search_users'
+    end
     resources :users
   end
 
   resources :interests
 
-  resources :users do |user|
+  resources :users do 
+    member do
+      get 'connect_with/:mentor_id' => 'users#connect_with'
+      get 'mentors'
+      get 'mentees'
+    end
     resources :interests
     resources :skills
   end
