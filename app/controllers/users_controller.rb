@@ -16,7 +16,6 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
     if @user.save
       render json: @user, status: :created, location: @user
     else
@@ -41,7 +40,11 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      if(params[:id]=="me" and params[:token] == "this_is_a_stub_token") then
+        @user = User.first
+      else
+        @user = User.find(params[:id])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.

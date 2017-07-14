@@ -38,6 +38,11 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
 
+  config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
+  }
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

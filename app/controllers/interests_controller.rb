@@ -1,9 +1,13 @@
 class InterestsController < ApplicationController
   before_action :set_interest, only: [:show, :update, :destroy]
+  before_action :set_user
 
   # GET /interests
   def index
     @interests = Interest.all
+    if(@user) then
+      @interests=@user.interests
+    end
 
     render json: @interests
   end
@@ -47,5 +51,13 @@ class InterestsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def interest_params
       params.require(:interest).permit(:name)
+    end
+
+    def set_user
+      if(params[:user_id]=="me" and params[:token] == "this_is_a_stub_token") then
+        @user = User.first
+      else
+        @user = User.find_by(id: params[:user_id])
+      end
     end
 end

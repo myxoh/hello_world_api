@@ -1,9 +1,12 @@
 class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :update, :destroy]
-
+  before_action :set_user
   # GET /skills
   def index
     @skills = Skill.all
+    if(@user) then
+      @skills = @user.skills
+    end
 
     render json: @skills
   end
@@ -47,5 +50,13 @@ class SkillsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def skill_params
       params.require(:skill).permit(:name)
+    end
+
+    def set_user
+      if(params[:user_id]=="me" and params[:token] == "this_is_a_stub_token") then
+        @user = User.first
+      else
+        @user = User.find_by(id: params[:user_id])
+      end
     end
 end
